@@ -38,6 +38,6 @@ process.on('SIGINT', function () {
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    User: require('../containers/users/model'),
+    User: require('../containers/users/models/user'),
     Chatting : require('../containers/Chat/model')
-}
+};

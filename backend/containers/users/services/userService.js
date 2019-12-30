@@ -1,7 +1,7 @@
 const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const db = require('../../db/db');
+const db = require('../../../db/db');
 const User = db.User;
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -21,23 +21,23 @@ function getRandomInt(min, max) {
 }
 
 async function authenticate({ email , password }) {
-  try{
-    const user = await User.findOne({ email }).lean();
-    if (user && bcrypt.compareSync(password, user.hash)) {
-        const { hash, ...userWithoutHash } = user.toObject();
-        const token = jwt.sign({ sub: user.id }, config.secret);
-        console.log('token',token);
-        return {
-            ...userWithoutHash,
-            token
-        };
+    try{
+        const user = await User.findOne({ email }).lean();
+        if (user && bcrypt.compareSync(password, user.hash)) {
+            const { hash, ...userWithoutHash } = user.toObject();
+            const token = jwt.sign({ sub: user.id }, config.secret);
+            console.log('token',token);
+            return {
+                ...userWithoutHash,
+                token
+            };
+        }
     }
-  }
-  catch(err){
-    console.log('error', err);
-    return { status : false, message : err}
-  }
-    
+    catch(err){
+        console.log('error', err);
+        return { status : false, message : err}
+    }
+
 }
 
 async function getAll() {
@@ -49,27 +49,27 @@ async function getById({ id }) {
 }
 
 async function create({firstName, lastName, email, password}) {
-  try{
-      if (await User.findOne({email}))  throw 'email "' + email + '" is already taken';
-      const hash = bcrypt.hashSync(password, 10);
-      const user = await User.create({
-        firstName,
-        lastName,
-        hash : bcrypt.hashSync(password, 10),
-        username : firstName + lastNamem,
-        role : 'user',
-        wToken: "wToken" + getRandomInt(0, 999999999999),
-      });
-      if (!user) return {status : false, message : "create user not success"};
+    try{
+        if (await User.findOne({email}))  throw 'email "' + email + '" is already taken';
+        const hash = bcrypt.hashSync(password, 10);
+        const user = await User.create({
+            firstName,
+            lastName,
+            hash : bcrypt.hashSync(password, 10),
+            username : firstName + lastNamem,
+            role : 'user',
+            wToken: "wToken" + getRandomInt(0, 999999999999),
+        });
+        if (!user) return {status : false, message : "create user not success"};
 
-      const data = await User.find().select('-hash');
+        const data = await User.find().select('-hash');
 
-      return { status : true, data};
-  }
-  catch(e){
-      console.log('error', e);
-      return { status : false, message : e}
-  }
+        return { status : true, data};
+    }
+    catch(e){
+        console.log('error', e);
+        return { status : false, message : e}
+    }
 
 }
 
@@ -134,7 +134,7 @@ async function _delete({id}) {
 //   catch(err){
 //     console.log('error', err)
 //   }
-    
+
 // }
 
 // async function getAll() {
