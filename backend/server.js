@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     } else {
         logDataReq.params = [];
     }
-    console.log('url : ',logDataReq.url)
+    console.log('url : ',logDataReq.url);
     next();
 });
 require('./routes')(app);

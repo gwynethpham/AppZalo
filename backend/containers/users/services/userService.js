@@ -56,7 +56,7 @@ async function create({firstName, lastName, email, password}) {
             firstName,
             lastName,
             hash : bcrypt.hashSync(password, 10),
-            username : firstName + lastNamem,
+            username : firstName + lastName,
             role : 'user',
             wToken: "wToken" + getRandomInt(0, 999999999999),
         });
