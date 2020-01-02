@@ -40,12 +40,13 @@ app.use((req, res, next) => {
         ip_client: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         params: null
     };
+    console.log('logDataReq ==== >>>>', logDataReq);
     if (req.method === 'POST') {
         logDataReq.params = req.body;
     } else {
         logDataReq.params = [];
     }
-    console.log('url : ',logDataReq.url)
+    console.log('url : ',logDataReq.url, '====>', new Date())
     next();
 });
 require('./routes')(app);

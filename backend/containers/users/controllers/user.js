@@ -10,6 +10,7 @@ router.get('/current', getCurrent);
 router.get('/getById', getById);
 router.put('/update', update);
 router.delete('/delete', _delete);
+router.post('/loginSocial', loginSocial);
 
 module.exports = router;
 
@@ -53,4 +54,9 @@ function _delete(req, res, next) {
     userService.delete(req.params.id)
         .then(() => res.json({}))
         .catch(err => next(err));
+}
+function loginSocial(req, res, next) {
+    userService.loginSocial(req.body)
+    .then(() => res.json({}))
+    .catch(err => next(err));
 }
