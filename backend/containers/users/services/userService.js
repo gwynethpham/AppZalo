@@ -11,7 +11,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    loginSocial
 };
 
 function getRandomInt(min, max) {
@@ -26,7 +27,6 @@ async function authenticate({ email , password }) {
         if (user && bcrypt.compareSync(password, user.hash)) {
             const { hash, ...userWithoutHash } = user.toObject();
             const token = jwt.sign({ sub: user.id }, config.secret);
-            console.log('token',token);
             return {
                 ...userWithoutHash,
                 token
@@ -55,7 +55,7 @@ async function create({firstName, lastName, email, password}) {
         const user = await User.create({
             firstName,
             lastName,
-            hash : bcrypt.hashSync(password, 10),
+            hash : hash,
             username : firstName + lastName,
             role : 'user',
             wToken: "wToken" + getRandomInt(0, 999999999999),
@@ -92,6 +92,18 @@ async function update({id, userParam}) {
 
 async function _delete({id}) {
     await User.findByIdAndRemove(id);
+}
+async function loginSocial({userName, email}) {
+    try{
+
+    }
+    catch(err){
+        console.log('Error', err);
+        return{
+            status : false,
+            message : err,
+        }
+    }
 }
 
 
