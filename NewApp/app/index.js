@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, AsyncStorage, StatusBar, Button} from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import Auth from './containers/login'
 
 const LoadingScreen = (props) => {
     useEffect(() => {
@@ -56,10 +57,10 @@ const Root = createSwitchNavigator(
     {
         App : AppZalo,
         Loading : LoadingScreen,
-        Login : Login
+        auth : Auth
     },
     {
-        initialRouteName: 'Login',
+        initialRouteName: 'auth',
     }
 );
 export default createAppContainer(Root);
