@@ -39,5 +39,6 @@ mongoose.Promise = global.Promise;
 
 module.exports = {
     User: require('../containers/users/models/user'),
+    Friend : require('../containers/users/models/userFriend'),
     Chatting : require('../containers/Chat/model')
 };
