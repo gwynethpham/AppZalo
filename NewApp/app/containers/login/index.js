@@ -1,8 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text ,TouchableOpacity, Platform, SafeAreaView ,ImageBackground } from 'react-native';
+import { Dimensions, StyleSheet, View, Text ,
+    TouchableOpacity, Platform, SafeAreaView ,ImageBackground ,Image } from 'react-native';
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import LoginComponent from './login';
 import RegisterComponent from './register';
+import {screenWidth, screenHeight} from '../../styles'
+
 
 const Authentication = (props) => {
     const _handleLogin = () => {
@@ -10,20 +13,23 @@ const Authentication = (props) => {
         props.navigation.navigate('login')
     };
     const _handleRegister = () => {
-
+        props.navigation.navigate('register')
     };
     return(
         <SafeAreaView  style={styles.container}>
-            <TouchableOpacity onPress={_handleLogin} background={Platform.OS === 'android' ? '' : ''}>
-                <View style={styles.btnLogin}>
-                    <Text> Đăng Nhập </Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={_handleRegister} >
-                <View style={styles.btnRegister}>
-                    <Text> Đăng ký123 </Text>
-                </View>
-            </TouchableOpacity>
+            <ImageBackground resizeMode='stretch' source={require('../../images/background-login.png')}
+            style={[{width: screenWidth, height : screenHeight , bacgroundSize : 'cover'}, styles.container]}>
+                <TouchableOpacity onPress={_handleLogin} background={Platform.OS === 'android' ? '' : ''}>
+                    <View style={styles.btnLogin}>
+                        <Text> Đăng Nhập </Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={_handleRegister} >
+                    <View style={styles.btnRegister}>
+                        <Text> Đăng ký </Text>
+                    </View>
+                </TouchableOpacity>
+            </ImageBackground>
         </SafeAreaView>
     )
 };
@@ -43,21 +49,30 @@ const styles = StyleSheet.create({
     container : {
         flex : 1,
         flexDirection : 'column',
-        backgroundColor : 'rgba(255, 0, 0, 0.2)',
         justifyContent : 'center',
         alignItems : 'center',
     },
     btnLogin  : {
-        padding : 5,
+        padding : 10,
         backgroundColor: '#f194ff',
         borderRadius : 15,
+        width : screenWidth - 30,
+        display : 'flex',
+        justifyContent : 'center',
+        alignItems : 'center',
+        shadowOffset:{  width: 10,  height: 10,  },
+        shadowColor: '#f194ff',
+        shadowOpacity: 1.0,
+        // boxShadow: '0px 9px 10px 10px rgba(255,255,255,0.2)'
     },
     btnRegister : {
-        marginTop: 3,
-        padding : 5,
-        backgroundColor : '#DCDCDC',
-        borderColor: '#f194ff',
-        borderWidth : 3,
-        borderRadius: 15,
+        marginTop : 20,
+        padding : 10,
+        backgroundColor: '#f194ff',
+        borderRadius : 15,
+        width : screenWidth - 30,
+        display : 'flex',
+        justifyContent : 'center',
+        alignItems : 'center',
     }
 });
