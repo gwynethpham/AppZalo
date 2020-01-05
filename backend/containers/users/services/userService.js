@@ -1,4 +1,4 @@
-const config = require('config.json');
+const config = require('../../../db/config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../../../db/db');
@@ -25,8 +25,8 @@ async function authenticate({ email , password }) {
     try{
         const user = await User.findOne({ email }).lean();
         if (user && bcrypt.compareSync(password, user.hash)) {
-            const { hash, ...userWithoutHash } = user.toObject();
-            const token = jwt.sign({ sub: user.id }, config.secret);
+            const { hash, ...userWithoutHash } = user;
+            const token = jwt.sign({ sub: user.id , date: user.updatedDate}, config.secret, { expiresIn: 60*60*60});
             return {
                 ...userWithoutHash,
                 token
@@ -37,7 +37,6 @@ async function authenticate({ email , password }) {
         console.log('error', err);
         return { status : false, message : err}
     }
-
 }
 
 async function getAll() {
@@ -57,6 +56,7 @@ async function create({firstName, lastName, email, password}) {
             lastName,
             hash : hash,
             username : firstName + lastName,
+            email : email,
             role : 'user',
             wToken: "wToken" + getRandomInt(0, 999999999999),
         });
