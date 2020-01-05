@@ -141,7 +141,7 @@ const Root = createSwitchNavigator(
         auth : Auth
     },
     {
-        initialRouteName: 'App',
+        initialRouteName: 'auth',
     }
 );
 export default createAppContainer(Root);

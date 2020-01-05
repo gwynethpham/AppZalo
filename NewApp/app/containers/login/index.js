@@ -3,13 +3,11 @@ import { Dimensions, StyleSheet, View, Text ,
     TouchableOpacity, Platform, SafeAreaView ,ImageBackground ,Image } from 'react-native';
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import LoginComponent from './login';
-import RegisterComponent from './register';
 import {screenWidth, screenHeight} from '../../styles'
 
 
 const Authentication = (props) => {
     const _handleLogin = () => {
-        // console.log('props.navigation.navigate',props.navigation);
         props.navigation.navigate('login')
     };
     const _handleRegister = () => {
@@ -36,7 +34,7 @@ const Authentication = (props) => {
 
 const Auth = createSwitchNavigator({
     login : LoginComponent,
-    register : RegisterComponent,
+    register : LoginComponent,
     layout : Authentication
 }, {
     initialRouteName : 'layout'
@@ -54,21 +52,21 @@ const styles = StyleSheet.create({
     },
     btnLogin  : {
         padding : 10,
-        backgroundColor: '#f194ff',
+        backgroundColor: '#fff',
         borderRadius : 15,
         width : screenWidth - 30,
         display : 'flex',
         justifyContent : 'center',
         alignItems : 'center',
         shadowOffset:{  width: 10,  height: 10,  },
-        shadowColor: '#f194ff',
+        shadowColor: '#fff',
         shadowOpacity: 1.0,
         // boxShadow: '0px 9px 10px 10px rgba(255,255,255,0.2)'
     },
     btnRegister : {
         marginTop : 20,
         padding : 10,
-        backgroundColor: '#f194ff',
+        backgroundColor: '#fff',
         borderRadius : 15,
         width : screenWidth - 30,
         display : 'flex',
