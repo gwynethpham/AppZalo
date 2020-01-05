@@ -1,9 +1,11 @@
 import React from 'react';
 import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
+import ToolBar from '../../containers/modules/ToolBar/index';
 
-const HomeOther = () =>  {
+const HomeOther = (props) =>  {
   return (
     <SafeAreaView style={styles.container}>
+      <ToolBar option='OTHER' props={props} />
       <View>
         <View>
           <Text>Home Other</Text>
