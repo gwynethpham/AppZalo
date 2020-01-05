@@ -10,6 +10,7 @@ import HomeDirectoryScreen from './view/Directory/HomeDirectory';
 import HomeGroupScreen from './view/Group/HomeGroup';
 import HomeTimeLineScreen from './view/TimeLine/HomeTimeLine';
 import HomeOtherScreen from './view/Other/HomeOther';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LoadingScreen = (props) => {
     useEffect(() => {
@@ -107,20 +108,20 @@ const AppZalo = createBottomTabNavigator(
                 const { routeName } = navigation.state;
                 let iconName;
                 switch (routeName) {
-                    case "Dash Board":
-                        iconName = <IconFontAwesome name='home' size={25} color={tintColor} />;
+                    case "Tin nhắn":
+                        iconName = <Icon name='message-text-outline' size={25} />;
                         break;
-                    case "Wallet":
-                        iconName = <IconSimpleLineIcons name='wallet' size={25} color={tintColor} />;
+                    case "Danh bạ":
+                        iconName = <Icon name='contacts' size={25}  />;
                         break;
-                    case "Transaction":
-                        iconName = <IconFontAwesome name='exchange' size={25} color={tintColor} />;
+                    case "Nhóm":
+                        iconName = <Icon name='account-group' size={25}  />;
                         break;
-                    case "Security":
-                        iconName = <IconMaterialIcons name='security' size={25} color={tintColor} />;
+                    case "Nhật ký":
+                        iconName = <Icon name='clock' size={25}  />;
                         break;
-                    case "Mining":
-                        iconName = <IconMaterialCommunityIcons name='coin' size={25} color={tintColor} />;
+                    case "Thêm":
+                        iconName = <Icon name='apps' size={25}  />;
                         break;
                 }
                 return iconName;
@@ -130,6 +131,7 @@ const AppZalo = createBottomTabNavigator(
         tabBarOptions: {
             activeTintColor: '#AC0000',
             inactiveTintColor: 'gray',
+            style: { padding: 10 }
         },
     }
 );
