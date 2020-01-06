@@ -4,7 +4,21 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const _ = require('lodash');
 
 module.exports = {
-    addFriend
+    getFriendById,
+    addFriend,
+    acceptFriend,
+    deleteFriend,
+    blockFriend,
+}
+
+async function getFriendById({userId}) {
+    try{
+        return await db.Friend.findById(userId).lean();
+    }
+    catch(e) {
+        console.log('Error', e);
+        return { status : false, message : "Get Friend not success!"}
+    }
 }
 
 // Function addFriend
@@ -63,5 +77,75 @@ async function addFriend({nameFriend, userId, myName}) {
             status : false,
             message : e
         }
+    }
+}
+
+async function acceptFriend({userFriendId, nameFriend, userId}){
+    try{
+        if(!userFriendId || !nameFriend || !userId) return{ status : false, message : 'Not found enough param'}
+        const FriendList = db.Friend.findOne({userId : ObjectId(userId)}).lean();
+        if(_.isNull(FriendList)) return {status : false, message : 'Friend list not found'};
+
+        const checkAddFriend = FriendList && FriendList.addFriend.map(item => {
+            if(item.userId === userFriendId) return item;
+            return null;
+        }).filter(item => item);
+
+        if(!checkAddFriend || (checkAddFriend && checkAddFriend.length === 0)) return {status : false, message : 'Check Add friend not found request'}
+
+        const newFriend = await db.Friend.findByIdAndUpdate({userId : ObjectId(userId)}, {$pull : {userId  : userFriendId}, $addToSet : {friendList : checkAddFriend}}, {$new : true}).lean();
+
+        if(!newFriend) return { status : false, message : 'Accept friend not success!'}
+        const data = await getFriendById({userId});
+
+        return { status : true, data}
+
+    }
+    catch(e) {
+        console.log('Errr',e);
+        return { status : false, message : e}
+    }
+}
+async function deleteFriend({userId, userFriendId}) {
+    try{
+        const CheckListFriend = await db.Friend.findById(userId).lean();
+        if(_.isNull(CheckListFriend)) return {status : false, message : 'Query FriendList not success!'}
+
+        CheckListFriend.friendList.map(async(item) => {
+            if(item.userId === userFriendId) {
+               await db.Friend.findByIdAndUpdate(userFriendId, {$pull : {userId : userFriendId}}, {$new : true}).lean();
+               
+               const data = await getFriendById({userId});
+               return { status : true, data}
+            }
+            return item;
+        });
+        const data =await getFriendById({userId});
+        return { status : true, data}
+    }
+    catch(e) {
+        console.log('Error', e);
+        return { status : false, message : e}
+    }
+}
+async function blockFriend({userId, userFriendId}) {
+    try{
+        const CheckListFriend = await db.Friend.findById(userId).lean();
+        if(_.isNull(CheckListFriend)) return {status : false, message : 'Query list Friend not success!'}
+
+        const paramBlockFriend = CheckListFriend && CheckListFriend.friendList.map(item => {
+            if(item.userId === userFriendId) return item;
+            return null;
+        }).filter(item => item);
+
+        const BlockFriend = await db.Friend.findByIdAndUpdate(userId, {$pull : {friendList : paramBlockFriend}, $addToSet : {blockFriend : paramBlockFriend}}, {$new : true}).lean();
+        if(!BlockFriend) return { status : false, message : 'Block Friend not success'}
+
+        const data =await getFriendById({userId});
+        return { status : true, data}
+    }
+    catch(e) {
+        console.log('Error', e);
+        return { status : false, message : e + 'Block Friend fail'}
     }
 }
