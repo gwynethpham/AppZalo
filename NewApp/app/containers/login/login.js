@@ -18,7 +18,8 @@ const LoginComponent = (props) => {
     },[props.navigation]);
 
     const _handleLogin = () => {
-        alert('Submit Login')
+        alert('Submit Login');
+        props.navigation.navigate('HomeMessage');
     };
     return(
         <SafeAreaView style={styles.containers}>

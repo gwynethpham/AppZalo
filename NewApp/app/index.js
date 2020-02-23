@@ -58,7 +58,7 @@ const MessageScreen = createStackNavigator({
 });
 
 const DirectoryScreen = createStackNavigator({
-    HomeMessage: {
+    HomeDirectoryScreen: {
         screen: HomeDirectoryScreen,
         navigationOptions: {
             header: null
@@ -67,7 +67,7 @@ const DirectoryScreen = createStackNavigator({
 });
 
 const GroupScreen = createStackNavigator({
-    HomeMessage: {
+    HomeGroupScreen: {
         screen: HomeGroupScreen,
         navigationOptions: {
             header: null
@@ -76,7 +76,7 @@ const GroupScreen = createStackNavigator({
 });
 
 const TimeLineScreen = createStackNavigator({
-    HomeMessage: {
+    HomeTimeLineScreen: {
         screen: HomeTimeLineScreen,
         navigationOptions: {
             header: null
@@ -85,7 +85,7 @@ const TimeLineScreen = createStackNavigator({
 });
 
 const OtherScreen = createStackNavigator({
-    HomeMessage: {
+    HomeOtherScreen: {
         screen: HomeOtherScreen,
         navigationOptions: {
             header: null

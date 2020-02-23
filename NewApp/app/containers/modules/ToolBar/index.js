@@ -1,39 +1,47 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components/native';
-import { BackHandler,TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconDesign from 'react-native-vector-icons/AntDesign'
+import { View, TouchableOpacity, Image } from 'react-native';
+
+const addMessaageIcon = require('../../../../assets/add_chat.png');
+const plusIcon = require('../../../../assets/plus.png');
+const searchIcon = require('../../../../assets/search.png');
+const addFriendIcon = require('../../../../assets/add_friend.png');
+const albumIcon = require('../../../../assets/add_album.png');
+const bellIcon = require('../../../../assets/bell.png');
+const qrcodeIcon = require('../../../../assets/qrcode.png');
+const settingIcon = require('../../../../assets/setting.png');
 
 const Toolbar = (toolbar) =>  { 
     function _renderIconButton(icon1, action1, icon2, action2) {
         return (
-            <IconView>
+            <Fragment>
                 { icon1 &&
-                    <IconButton onPress={() => action1}>
-                        <Icon name={icon1} color='white' size={25}/>
-                    </IconButton>
+                    <TouchableOpacity onPress={() => {action1}}>
+                        <Image style={{ width: 25, height: 25 }} source={icon1} />
+                    </TouchableOpacity>
                 }
+                { icon1 && icon2 ? <View style={{ paddingLeft: 10 }} /> : null }
                 { icon2 &&
-                    <IconButton onPress={() => action2}>
-                        <Icon name={icon2} color='white' size={25}/>
-                    </IconButton>
+                    <TouchableOpacity onPress={() => {action2}}>
+                        <Image style={{ width: 25, height: 25 }} source={icon2} />
+                    </TouchableOpacity>
                 }
-            </IconView>
+            </Fragment>
         )
     }
 
     function _renderRightView(toolbar) {
         switch (toolbar.option) {
             case 'MESSAGE' : 
-                return _renderIconButton('message-plus', toolbar.props.navigation.navigate(''), 'add', toolbar.props.navigation.navigate(''));
+                return _renderIconButton(addMessaageIcon, toolbar.props.navigation.navigate(''), plusIcon, toolbar.props.navigation.navigate(''));
             case 'DIRECTORY' : 
-                return _renderIconButton('md-person-add', toolbar.props.navigation.navigate(''), null, null);
+                return _renderIconButton(null, null, addFriendIcon, toolbar.props.navigation.navigate(''));
             case 'GROUP' : 
-                return _renderIconButton('message-plus', toolbar.props.navigation.navigate(''), 'add', toolbar.props.navigation.navigate(''));
+                return _renderIconButton(addMessaageIcon, toolbar.props.navigation.navigate(''), plusIcon, toolbar.props.navigation.navigate(''));
             case 'TIMELINE' : 
-                return _renderIconButton('image-plus', toolbar.props.navigation.navigate(''), 'alarm-light-outline', toolbar.props.navigation.navigate(''));
+                return _renderIconButton(albumIcon, toolbar.props.navigation.navigate(''), bellIcon, toolbar.props.navigation.navigate(''));
             case 'OTHER' : 
-                return _renderIconButton('qrcode', toolbar.props.navigation.navigate(''), 'settings', toolbar.props.navigation.navigate(''));
+                return _renderIconButton(qrcodeIcon, toolbar.props.navigation.navigate(''), settingIcon, toolbar.props.navigation.navigate(''));
             default : console.log('default')
                 break;
         }
@@ -44,12 +52,14 @@ const Toolbar = (toolbar) =>  {
     return (
         <ToolBarView>
             <LeftView>
-                <IconDesign name='search1' size={20} color='white'/>
+                <TouchableOpacity onPress={() => {}}>
+                    <Image style={{ width: 25, height: 25 }} source={searchIcon} />    
+                </TouchableOpacity>
             </LeftView>
             <CenterView>
                 <Text>Tìm bạn bè, tin nhắn ...</Text>
             </CenterView>
-            <RightView>
+            <RightView style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 10 }}>
                 { _renderRightView(toolbar) }
             </RightView>
         </ToolBarView>
