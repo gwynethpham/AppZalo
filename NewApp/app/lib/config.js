@@ -1,0 +1,1 @@
+export const apiLocal = 'http://192.168.17.2:4000'

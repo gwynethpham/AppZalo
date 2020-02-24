@@ -62,7 +62,7 @@ async function create({firstName, lastName, email, password}) {
         });
         if (!user) return {status : false, message : "create user not success"};
 
-        const data = await User.find().select('-hash');
+        const data = await User.find({email : email}).select('-hash');
 
         return { status : true, data};
     }

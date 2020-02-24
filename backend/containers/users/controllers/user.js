@@ -29,8 +29,8 @@ function authenticate(req, res, next) {
 // }
 
 function register(req, res, next) {
-    userService.create(req.body)
-    .then(result => response.handleResponse(req, res, true, result))
+    userService.create(req.body.param)
+    .then(result => response.handleResponse(req, res, false, result))
     .catch(err => next(err));
 }
 

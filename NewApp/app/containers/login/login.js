@@ -1,16 +1,20 @@
 import React, {useState , useEffect} from 'react';
+import { useDispatch } from "react-redux";
 import {KeyboardAvoidingView, StyleSheet, View, Text, Dimensions,
     Image, TextInput, SafeAreaView, TouchableOpacity} from 'react-native';
 import {screenWidth, screenHeight} from "../../styles";
+import {userAction} from '../../actions/userAction'
 // import { LoginButton } from 'react-native-fbsdk';
 
 const LoginComponent = (props) => {
     LoginComponent.navigationOptions = {title : 'Login'};
+    const dispatch = useDispatch();
     const [firstName, setFirstName] =useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [mode, setMode] = useState();
+
     useEffect(() => {
         if(props.navigation) {
             setMode(props.navigation.state.routeName);
@@ -18,8 +22,15 @@ const LoginComponent = (props) => {
     },[props.navigation]);
 
     const _handleLogin = () => {
-        alert('Submit Login');
-        props.navigation.navigate('HomeMessage');
+        
+        // props.navigation.navigate('HomeMessage');
+        if(mode === 'login') {
+
+        }
+        else {
+            const param = { firstName, lastName, email, password }
+            dispatch(userAction.register(param));
+        }
     };
     return(
         <SafeAreaView style={styles.containers}>
