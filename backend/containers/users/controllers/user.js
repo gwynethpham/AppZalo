@@ -16,8 +16,8 @@ router.post('/loginSocial', loginSocial);
 module.exports = router;
 
 function authenticate(req, res, next) {
-    userService.authenticate(req.body)
-        .then(result => response.handleResponse(req, res, true, result))
+    userService.authenticate(req.body.data.param)
+        .then(result => response.handleResponse(req, res, false, result))
         .catch(err => next(err));
 }
 
@@ -30,6 +30,9 @@ function authenticate(req, res, next) {
 
 function register(req, res, next) {
     userService.create(req.body.param)
+    // .then(result => {
+    //     console.log('result', result)
+    // })
     .then(result => response.handleResponse(req, res, false, result))
     .catch(err => next(err));
 }

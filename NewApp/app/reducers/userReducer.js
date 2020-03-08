@@ -2,10 +2,25 @@ import * as t from '../constants';
 
 const initialState = {
     login : false,
-    user : { }
+    user : { },
 };
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
+        case t.USER_LOGIN_SUCCESS : {
+            // console.log('action login success :', action)
+            return{
+                ...state,
+                login : action.data.status,
+                token : action.data.token,
+                user : action.data
+            }
+        }
+        case t.USER_LOGIN_SUCCESS : {
+            return{
+                ...state,
+                login : false
+            }
+        }
         case t.FETCH_USER :
             return {
                 ...state,
@@ -13,18 +28,21 @@ const userReducer = (state = initialState, action) => {
                 fetching:true
             };
         case t.USER_REGISTER_SUCCESS :
-            console.log('action',action)
             return {
                 ...state,
-                login: true,
-                user : action.user
+                register: action.data.status,
             };
         case t.USER_REGISTER_FAILURE :
             return {
                 ...state,
-                login: false,
+                register: false,
                 error: action.error
             };
+        case t.RESET_STATE_USER :
+            delete state.register;
+            return{
+                ...state 
+            }
         default:
             return state
     }

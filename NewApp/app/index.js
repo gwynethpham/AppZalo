@@ -12,42 +12,6 @@ import HomeTimeLineScreen from './view/TimeLine/HomeTimeLine';
 import HomeOtherScreen from './view/Other/HomeOther';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const LoadingScreen = (props) => {
-    useEffect(() => {
-        _bootstrapAsync()
-    },[]);
-    const _bootstrapAsync = () => {
-        const userToken = AsyncStorage.getItem('token');
-        console.log('userToken',userToken);
-        if(userToken) {
-            setTimeout(() => {
-                props.navigation.navigate('App');
-            }, 500)
-        }
-        else{
-            props.navigation.navigate('Login', {fetchData : false, message : 'Login not success'});
-        }
-    };
-    return(
-        <View style={styles.classCenter}>
-            <ActivityIndicator size={'large'} color={'#0000ff'}/>
-            <StatusBar barStyle="default" />
-        </View>
-    )
-};
-const Login = (props) => {
-    Login.navigationOptions = {title : 'Login'};
-    const _signInAsync = async() => {
-        await AsyncStorage.setItem('token', 'Pham Minh Tan');
-        props.navigation.navigate('Loading');
-    };
-    return (
-        <View  style={styles.classCenter}>
-            <Button title="Sign in!" onPress={_signInAsync} />
-        </View>
-    );
-};
-
 const MessageScreen = createStackNavigator({
     HomeMessage: {
         screen: HomeMessageScreen,
@@ -139,7 +103,7 @@ const AppZalo = createBottomTabNavigator(
 const Root = createSwitchNavigator(
     {
         App : AppZalo,
-        Loading : LoadingScreen,
+        // Loading : LoadingScreen,
         auth : Auth
     },
     {

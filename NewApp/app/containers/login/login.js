@@ -1,9 +1,10 @@
 import React, {useState , useEffect} from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {KeyboardAvoidingView, StyleSheet, View, Text, Dimensions,
-    Image, TextInput, SafeAreaView, TouchableOpacity} from 'react-native';
+    Image, TextInput, SafeAreaView, TouchableOpacity, AsyncStorage} from 'react-native';
 import {screenWidth, screenHeight} from "../../styles";
-import {userAction} from '../../actions/userAction'
+import {userAction} from '../../actions/userAction';
+import Loading from '../../general/loading'
 // import { LoginButton } from 'react-native-fbsdk';
 
 const LoginComponent = (props) => {
@@ -14,24 +15,51 @@ const LoginComponent = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [mode, setMode] = useState();
+    const [register, setRegister] = useState(false);
+    const [loginState, setLoginState] = useState(false);
+    const {user,user : {login}} = useSelector(state => state);
 
     useEffect(() => {
         if(props.navigation) {
             setMode(props.navigation.state.routeName);
         }
+       
     },[props.navigation]);
+    useEffect(()=> {
+        if(login && user && user.token){
+            AsyncStorage.setItem('token', user.token)
+            props.navigation.navigate('loading');
+        }
+        else{
+            setLoginState(true);
+            setTimeout(() => {
+                setLoginState(false);
+            },2000)
+        }
+    },[login])
+    useEffect(()=> {
+        if(user && user.register) {
+            setFirstName(''); setLastName(''); setEmail(''); setPassword('');
+            setMode('login');
+            setRegister('true');
+            setTimeout(()=> {
+                dispatch(userAction.resetState());
+            },1000);
+        }else{
+            setRegister(false);
+        }
+    },[user.register])
 
     const _handleLogin = () => {
-        
-        // props.navigation.navigate('HomeMessage');
         if(mode === 'login') {
-
+            dispatch(userAction.login({email, password}));
         }
         else {
             const param = { firstName, lastName, email, password }
             dispatch(userAction.register(param));
         }
     };
+   
     return(
         <SafeAreaView style={styles.containers}>
             <View style={styles.header}>
@@ -45,6 +73,13 @@ const LoginComponent = (props) => {
             </View>
             <KeyboardAvoidingView style={[styles.body, mode === 'login' ? {flex : 5} : {flex : 7}]} behavior={'padding'} enable>
                 <View style={styles.viewForm} >
+                    {register && <View style={{color : 'red', paddingTop : 10}}> 
+                        <Text>Register success!</Text>
+                    </View>}
+                    {loginState && <View style={{color : 'red', paddingTop : 10}}> 
+                        <Text>Login failed!</Text>
+                    </View>}
+
                     {mode !=='login' &&<View>
                             <Text style={styles.textEmail}>First name</Text>
                             <View>

@@ -4,6 +4,7 @@ import { Dimensions, StyleSheet, View, Text ,
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import LoginComponent from './login';
 import {screenWidth, screenHeight} from '../../styles'
+import LoadingScreen from '../../general/loading';
 
 
 const Authentication = (props) => {
@@ -34,10 +35,11 @@ const Authentication = (props) => {
 
 const Auth = createSwitchNavigator({
     login : LoginComponent,
+    loading : LoadingScreen,
     register : LoginComponent,
     layout : Authentication
 }, {
-    initialRouteName : 'layout'
+    initialRouteName : 'loading'
 });
 export default createAppContainer(Auth);
 

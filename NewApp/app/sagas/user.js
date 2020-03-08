@@ -1,8 +1,10 @@
 
 import axios from "axios";
-import {apiLocal} from '../lib/config'
+import {apiLocal} from '../lib/config';
+import {handleResponse} from '../lib/handleResponse';
 import { put, call, takeLatest} from 'redux-saga/effects';
 import * as t from '../constants';
+import {loginRequest} from '../services/api';
 function* getUser(action) {
     try{
         // const data = yield call(getUserInfo);
@@ -20,7 +22,14 @@ export function* getUserInfo() {
 
 function* handleLogin(param){
     try{
-        console.log('param_______', param);
+        const data = yield call(loginRequest, param);
+        console.log('data', data);
+        if(data.status){
+            yield put({ type : t.USER_LOGIN_SUCCESS, data});
+        }
+        else{
+            yield put({type : t.USER_LOGIN_FAILURE, data})
+        }
     }
     catch(e){
         yield put({type : t.USER_REGISTER_FAILURE,e});
@@ -30,13 +39,18 @@ export function* loginZalo(){
     yield takeLatest(t.LOGIN_REQUEST,handleLogin);
 }
 const fetRegister = async (data) =>{
-    return await axios.post(`${apiLocal}/users/register`,{param: data})
+    const register =  await axios.post(`${apiLocal}/users/register`,{param: data});
+    console.log('register', register.data);
+    return register.data;
 };
 function* handleRegister(action){
     try{
         const data = yield call(fetRegister, action.param)
-        console.log('data_____', data);
-        yield put({type : t.USER_REGISTER_SUCCESS, data});
+        if(data.status){
+            yield put({type : t.USER_REGISTER_SUCCESS, data});
+        }else{
+            yield put({type : t.USER_REGISTER_FAILURE, data});
+        }
     }
     catch(e){
         yield put({type : t.USER_REGISTER_FAILURE,e});

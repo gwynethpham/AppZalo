@@ -23,15 +23,23 @@ function getRandomInt(min, max) {
 
 async function authenticate({ email , password }) {
     try{
-        const user = await User.findOne({ email }).lean();
+        console.log('param', { email , password })
+        const user = await User.findOne({ email : email}).lean();
+        console.log('user.hash', user);
+        // const hash = bcrypt.hashSync(password, 10);
+        // console.log('hash', hash);
+        // console.log('password', password);
+        console.log('bcrypt.compareSync(password, user.hash', bcrypt.compareSync(password, user.hash));
         if (user && bcrypt.compareSync(password, user.hash)) {
-            const { hash, ...userWithoutHash } = user;
+            const { hash,_id, ...userWithoutHash } = user;
             const token = jwt.sign({ sub: user.id , date: user.updatedDate}, config.secret, { expiresIn: 60*60*60});
             return {
+                status : true,
                 ...userWithoutHash,
                 token
             };
         }
+        return { status : false, message : 'NOT FOUND USER'}
     }
     catch(err){
         console.log('error', err);
@@ -62,9 +70,9 @@ async function create({firstName, lastName, email, password}) {
         });
         if (!user) return {status : false, message : "create user not success"};
 
-        const data = await User.find({email : email}).select('-hash');
+        // const data = await User.find({email : email}).select('-hash');
 
-        return { status : true, data};
+        return { status : true };
     }
     catch(e){
         console.log('error', e);
